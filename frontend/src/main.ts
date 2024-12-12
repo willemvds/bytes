@@ -19,7 +19,7 @@ function initMain () {
     return
   }
 
-  document.addEventListener('paste', function (ev) {
+  document.addEventListener(Document.EVENT_PASTE, function (ev) {
 	  handlePaste(ev, mainDiv)
   })
 }
