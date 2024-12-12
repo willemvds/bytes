@@ -1,6 +1,6 @@
 import { Document } from './webapi.ts'
 
-const handlePaste = function (ev: ClipboardEvent, mainDiv: Element) {
+function handlePaste (ev: ClipboardEvent, mainDiv: Element) {
   ev.preventDefault()
   console.debug('paste event = ', ev)
   if (ev.clipboardData != null) {
