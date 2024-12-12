@@ -21,11 +21,14 @@ func stylesCss(resp http.ResponseWriter, req *http.Request) {
 	http.ServeFile(resp, req, stylesPath)
 }
 
+
+
 func main() {
 	port := 13018
 	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.Dir("../../../../frontend/dist")))
 	mux.HandleFunc("/bytes.js", bytesJs)
-	mux.HandleFunc("/", index)
+	//mux.HandleFunc("/", index)
 	mux.HandleFunc("/styles.css", stylesCss)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
 	fmt.Println("ListenAndServe err = ", err)
