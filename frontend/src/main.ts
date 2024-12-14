@@ -6,11 +6,11 @@ import {
 
 const mainDivId = 'main'
 
-const imageExtensions = ['bmp', 'gif', 'jpeg', 'jpg', 'png']
+const imageExtensions = ['bmp', 'gif', 'jpeg', 'jpg', 'png', 'tif', 'tiff', 'webp']
 
 function hasImageExtension (filename: string) {
   for (let i = 0; i < imageExtensions.length; i++) {
-    if (filename.includes(imageExtensions[i])) {
+    if (filename.includes(`.${imageExtensions[i]}`)) {
       return true
     }
   }
