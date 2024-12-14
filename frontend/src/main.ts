@@ -6,10 +6,29 @@ import {
 
 const mainDivId = 'main'
 
+const imageExtensions = ['bmp', 'gif', 'jpeg', 'jpg', 'png']
+
+function hasImageExtension (filename: string) {
+  for (let i = 0; i < imageExtensions.length; i++) {
+    if (filename.includes(imageExtensions[i])) {
+      return true
+    }
+  }
+
+  return false
+}
+
 function handleDragOver (ev: Event, mainDiv: Element) {
   console.debug('dragOver event = ', ev)
   ev.preventDefault()
   console.debug(mainDiv)
+}
+
+function showImage (mainDiv: Element, content: string) {
+  const nte = document.createElement('img')
+  nte.src = content
+  // nte.appendChild(document.createTextNode(contents))
+  mainDiv.appendChild(nte)
 }
 
 function handleDrop (ev: Event, mainDiv: Element) {
@@ -24,6 +43,9 @@ function handleDrop (ev: Event, mainDiv: Element) {
   console.debug('data transfer = ', dt)
   console.debug('files = ', dt.files)
 
+  const isImage = hasImageExtension(dt.files[0].name)
+  console.debug('isimage', dt.files[0].name, isImage)
+
   const fr = new FileReader()
   fr.onloadend = function (ev) {
     console.debug('loadend ev = ', ev)
@@ -32,14 +54,23 @@ function handleDrop (ev: Event, mainDiv: Element) {
     }
 
     const contents = ev.target.result
+
     if (typeof (contents) === 'string') {
-      // const contentsText = new TextDecoder().decode(contents);
-      const nte = document.createElement('p')
-      nte.appendChild(document.createTextNode(contents))
-      mainDiv.appendChild(nte)
+      if (!isImage) {
+        // const contentsText = new TextDecoder().decode(contents);
+        const nte = document.createElement('p')
+        nte.appendChild(document.createTextNode(contents))
+        mainDiv.appendChild(nte)
+      } else {
+        showImage(mainDiv, ev.target.result as string)
+      }
     }
   }
-  fr.readAsText(dt.files[0])
+  if (isImage) {
+    fr.readAsDataURL(dt.files[0])
+  } else {
+    fr.readAsText(dt.files[0])
+  }
 }
 
 function handlePaste (ev: ClipboardEvent, mainDiv: Element) {
