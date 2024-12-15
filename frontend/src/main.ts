@@ -1,3 +1,5 @@
+import './style.css'
+
 import {
   Clipboard,
   Document,
@@ -27,6 +29,7 @@ function handleDragOver (ev: Event, mainDiv: Element) {
 function showImage (mainDiv: Element, content: string) {
   const nte = document.createElement('img')
   nte.src = content
+  nte.className = 'user_image'
   // nte.appendChild(document.createTextNode(contents))
   mainDiv.appendChild(nte)
 }
