@@ -34,6 +34,12 @@ function showImage (mainDiv: Element, content: string) {
   mainDiv.appendChild(nte)
 }
 
+function showText(mainDiv: Element, content: string) {
+  const nte = document.createElement('p')
+  nte.innerHTML = content.replace("\n", "<br>")
+  mainDiv.appendChild(nte)
+}
+
 function handleDrop (ev: Event, mainDiv: Element) {
   console.debug('drop event = ', ev)
   ev.preventDefault()
@@ -60,10 +66,7 @@ function handleDrop (ev: Event, mainDiv: Element) {
 
     if (typeof (contents) === 'string') {
       if (!isImage) {
-        // const contentsText = new TextDecoder().decode(contents);
-        const nte = document.createElement('p')
-        nte.appendChild(document.createTextNode(contents))
-        mainDiv.appendChild(nte)
+	showText(mainDiv, contents)
       } else {
         showImage(mainDiv, ev.target.result as string)
       }
