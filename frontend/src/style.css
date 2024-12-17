@@ -15,14 +15,19 @@
 
 body {
   margin: 0;
+/*
   display: flex;
   place-items: center;
+*/
+  text-align: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
 #main {
+/*
   max-width: 1280px;
+*/
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -35,6 +40,9 @@ body {
   }
 }
 
-.user_image {
+.imageview {
   width: 100%;
+}
+
+.textview {
 }
