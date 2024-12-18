@@ -137,6 +137,15 @@ function handleDrop (ev: Event, htmlElements: HtmlElements) {
 	uploadButton.onclick = function(ev: Event) {
 	  console.debug("we clicked upload here", ev);
 	  console.debug(contents)
+	  const uploadXHR = new XMLHttpRequest();
+	  uploadXHR.upload.addEventListener("loadend", function (ev: Event) {
+	     console.log("upload LOADEVENT event = ", ev)
+	  })
+
+	  const uploadForm = new FormData()
+	  uploadForm.append('file', dt.files[0])
+	  uploadXHR.open("POST", "/upload", true)
+	  uploadXHR.send(uploadForm)
 	}
       }
     }
