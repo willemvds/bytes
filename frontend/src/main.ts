@@ -28,7 +28,7 @@ function handleDragOver (ev: Event, mainDiv: Element) {
 }
 
 // https://gist.github.com/jonleighton/958841
-function arrayBufferToBase64(arrayBuffer) {
+function arrayBufferToBase64(arrayBuffer: ArrayBuffer) {
   var base64    = ''
   var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
@@ -104,7 +104,6 @@ function showText(mainDiv: Element, content: ArrayBuffer) {
 
 function handleDrop (ev: Event, htmlElements: HtmlElements) {
   const mainDiv = htmlElements[mainDivId]
-  console.debug('is this the main div?', mainDiv)
   console.debug('drop event = ', ev)
   ev.preventDefault()
   const de = ev as DragEvent
