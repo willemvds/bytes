@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+const KB = 1000 // bytes
+const MB = 1000 * KB
+const GB = 1000 * MB
+
 const bytesPath = "../../frontend/src/bytes.js"
 const indexPath = "../../frontend/src/index.html"
 const stylesPath = "../../frontend/src/styles.css"
@@ -21,7 +25,24 @@ func stylesCss(resp http.ResponseWriter, req *http.Request) {
 	http.ServeFile(resp, req, stylesPath)
 }
 
+func upload(resp http.ResponseWriter, req *http.Request) {
+	err := req.ParseMultipartForm(5 * MB)
+	if err != nil {
+		http.Error(resp, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
+	_, header, err := req.FormFile("file")
+	if err != nil {
+		http.Error(resp, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	fmt.Printf("[upload] filename=%s, size=%d\n", header.Filename, header.Size)
+	fmt.Println("[upload] MIME header =", header.Header)
+
+	fmt.Fprintf(resp, "Received %d bytes. Storing it in /dev/null for now.", header.Size)
+}
 
 func main() {
 	port := 13018
@@ -30,6 +51,7 @@ func main() {
 	mux.HandleFunc("/bytes.js", bytesJs)
 	//mux.HandleFunc("/", index)
 	mux.HandleFunc("/styles.css", stylesCss)
+	mux.HandleFunc("/upload", upload)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
 	fmt.Println("ListenAndServe err = ", err)
 }
