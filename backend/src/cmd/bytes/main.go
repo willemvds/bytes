@@ -1,8 +1,11 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
+
+	_ "github.com/glebarez/go-sqlite"
 )
 
 const KB = 1000 // bytes
@@ -45,6 +48,22 @@ func upload(resp http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	db, err := sql.Open("sqlite", "bytes.db")
+	if err != nil {
+		fmt.Println("db err = ", err)
+		return
+	}
+
+	version := ""
+	qr := db.QueryRow("select sqlite_version()")
+	fmt.Println(qr)
+	err = qr.Scan(&version)
+	if err != nil {
+		fmt.Println("SQLite scan err =", err)
+	} else {
+		fmt.Println("SQLite version =", version)
+	}
+
 	port := 13018
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("../../../../frontend/dist")))
@@ -52,6 +71,6 @@ func main() {
 	//mux.HandleFunc("/", index)
 	mux.HandleFunc("/styles.css", stylesCss)
 	mux.HandleFunc("/upload", upload)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+	err = http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
 	fmt.Println("ListenAndServe err = ", err)
 }
